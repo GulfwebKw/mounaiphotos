@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* CSS Document */
+	
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700;1,900&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
+	
+.txt_arabic{color:#002e5b; font:18px 'hili', Tahoma, Geneva, sans-serif; direction:rtl; text-decoration:none;}
+
+.slide-menu-open{color:#099bef; font-size:40px; margin: 20px; font-weight: 300;}
+
+.side-menu-wrapper { /* style menu wrapper */
+    overflow: hidden;
+    background: rgba(255,255,255,.95);
+    padding:40px 0 0 0;
+    position: fixed; /* Fixed position */
+    top: 0;
+    right: -290px; /* Sidebar initial position. "right" for right positioned menu */
+    height: 100%;
+    z-index:9999;
+    transition: 0.5s; /* CSS transition speed */
+    width: 250px;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+	}
+	
+.side-menu-wrapper > ul{ /* css ul list style */
+    list-style:none;
+    padding:0;
+    margin:0;
+    overflow-y: auto; /* enable scroll for menu items */
+    width:500px; /* this width will hide scroll bar */
+    height:95%;
+}
+.side-menu-wrapper > ul > li > a { /* links */
+    display: block;
+    border-bottom: 1px solid #1d67cd;
+    padding:10px 10px 10px 15px;
+    color: #fff;
+	background:#099bef;
+    transition: 0.3s;
+    text-decoration: none;
+	}
+	
+.side-menu-wrapper > ul > li > a:hover, .side-menu-wrapper > ul > li > ul > li > a:hover{
+	background:#099bef;
+	color:#fff;
+	}
+	
+.side-menu-wrapper > ul > li > ul{
+	list-style:none;
+    padding:0;
+    margin:0;
+    overflow-y: auto;
+	}
+	
+.side-menu-wrapper > ul > li > ul > li > a{
+	display: block;
+    border-bottom: 1px solid #002e5b;
+    padding:10px 10px 10px 30px;
+    color: #fff;
+	background:#099bef;
+    transition: 0.3s;
+    text-decoration: none;
+	}
+	
+.side-menu-wrapper > a.menu-close { /* close button */
+    padding:10px 0 20px 40px;
+    color: #099bef;
+    display: block;
+    margin: -30px 0 -10px -20px;
+    font-size: 50px;
+    text-decoration: none;
+	}
+
+.side-menu-overlay { /* overlay */
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.7);
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s;
+}

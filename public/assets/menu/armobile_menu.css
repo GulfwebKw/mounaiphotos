@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+
+.slide-menu-open{
+    float: right;
+    color: #fff;
+    margin: 13px 0 0 0;
+}
+
+.side-menu-wrapper { /* style menu wrapper */
+    overflow: hidden;
+    background: rgba(34,34,34,.90);
+    padding:40px 0 0 0;
+    position: fixed; /* Fixed position */
+    top: 0;
+    right: -290px; /* Sidebar initial position. "right" for right positioned menu */
+    height: 100%;
+    z-index:999;
+    transition: 0.5s; /* CSS transition speed */
+    width: 250px;
+    font-family: "Readex Pro", sans-serif;
+    font-weight: 300;
+	}
+	
+.side-menu-wrapper > ul{ /* css ul list style */
+    list-style:none;
+    padding:0;
+    margin:0;
+    overflow-y: auto; /* enable scroll for menu items */
+    width:500px; /* this width will hide scroll bar */
+    height:95%;
+}
+.side-menu-wrapper > ul > li > a { /* links */
+    display: block;
+    border-bottom: 1px solid #222;
+    padding:10px 10px 10px 15px;
+    color: #fff;
+	background:#666;
+    transition: 0.3s;
+    text-decoration: none;
+	}
+	
+.side-menu-wrapper > ul > li > a:hover, .side-menu-wrapper > ul > li > ul > li > a:hover{
+	background:#333;
+	}
+	
+.side-menu-wrapper > ul > li > ul{
+	list-style:none;
+    padding:0;
+    margin:0;
+    overflow-y: auto;
+	}
+	
+.side-menu-wrapper > ul > li > ul > li > a{
+	display: block;
+    border-bottom: 1px solid #222;
+    padding:10px 10px 10px 30px;
+    color: #fff;
+	background:#666;
+    transition: 0.3s;
+    text-decoration: none;
+	}
+	
+.side-menu-wrapper > a.menu-close { /* close button */
+    padding:10px 20px 20px 40px;
+    color: #fff;
+    display: block;
+    margin: -30px 0 -10px -20px;
+    font-size: 40px;
+    text-decoration: none;
+	}
+
+.side-menu-overlay { /* overlay */
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.7);
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s;
+}
