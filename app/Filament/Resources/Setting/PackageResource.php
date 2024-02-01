@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Setting;
 
-use App\Filament\Resources\GalleryResource\Pages;
-use App\Models\Gallery;
+use App\Filament\Resources\Setting\PackageResource\Pages;
+use App\Filament\Resources\Setting\PackageResource\RelationManagers;
+use App\Filament\Resources\Setting;
+use App\Models\Package;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 
-class GalleryResource extends Resource
+class PackageResource extends Resource
 {
-    protected static ?string $model = Gallery::class;
+    protected static ?string $model = Package::class;
 
+    protected static ?string $navigationGroup = 'Setting';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title'];
+        return ['title', 'description' , 'included'];
     }
 
     public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
@@ -39,6 +39,18 @@ class GalleryResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255)
                     ->required(),
+                Forms\Components\TextInput::make('price')
+                    ->step(0.01)
+                    ->minValue(0)
+                    ->type('number')
+                    ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->rows(8)
+                    ->required(),
+                Forms\Components\Textarea::make('included')
+                    ->rows(8)
+                    ->label('Included in this package')
+                    ->required(),
                 Forms\Components\Toggle::make('is_active'),
                 Forms\Components\FileUpload::make('picture')
                     ->image(),
@@ -49,26 +61,23 @@ class GalleryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\Layout\Stack::make([
-                    Tables\Columns\ImageColumn::make('picture')
-                        ->height('100%')
-                        ->width('100%'),
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('title')
-                            ->weight(FontWeight::Bold),
-                    ]),
-                ])->space(3),
+                Tables\Columns\ImageColumn::make('picture'),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\BooleanColumn::make('is_active'),
+                Tables\Columns\TextColumn::make('description')
+                    ->hidden()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('included')
+                    ->hidden()
+                    ->searchable(),
             ])
             ->filters([
-                //
-            ])
-            ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
-//                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -89,9 +98,9 @@ class GalleryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGalleries::route('/'),
-            'create' => Pages\CreateGallery::route('/create'),
-            'edit' => Pages\EditGallery::route('/{record}/edit'),
+            'index' => Setting\PackageResource\Pages\ListPackages::route('/'),
+            'create' => Setting\PackageResource\Pages\CreatePackage::route('/create'),
+            'edit' => Setting\PackageResource\Pages\EditPackage::route('/{record}/edit'),
         ];
     }
 }
