@@ -130,6 +130,7 @@ class Settings extends Page implements HasForms
                         ->type('url')
                         ->nullable(),
                     TextInput::make('whatsapp')
+                        ->label('Whatsapp Number')
                         ->type('url')
                         ->nullable(),
                     TextInput::make('tiktok')

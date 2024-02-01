@@ -8,7 +8,7 @@
     <meta name="author" content="Gulf web">
 
     <!-- Page Title -->
-    <title>@hasSection('title') @yield('title') - @endif{{ \HackerESQ\Settings\Facades\Settings::get('site_title', 'Site title') }}</title>
+    <title>@hasSection('title') @yield('title') - @endif @if(isset($title)){{ $title }} - @endif{{ \HackerESQ\Settings\Facades\Settings::get('site_title', 'Site title') }}</title>
 
     <!--favicon icon-->
     <link rel="icon" href="{{ asset('assets/img/fav.png') }}" type="image/png" sizes="16x16" />
@@ -35,6 +35,19 @@
     <!-- menu source start here -->
     <link href="{{ asset('assets/menu/armobile_menu.css') }}" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="{{ asset('assets/menu/menu.js') }}"></script>
+
+    <style>
+        .is-invalid{
+            border-width: 1px;
+            border-color: red !important;
+            border: solid;
+            border-radius: 5px;
+        }
+    </style>
+    @hasSection('style')
+        @yield('style')
+    @endif
+    @livewireStyles
 </head>
 <body>
 
@@ -57,9 +70,9 @@
                         <nav>
                             <ul>
                                 <li><a href="{{ route('home') }}">الرئيسية</a></li>
-                                <li><a href="gallery.html">معرض الصور</a></li>
+                                <li><a href="{{ route('gallery') }}">معرض الصور</a></li>
                                 <li><a href="reservation.html">متابعة الحجوزات</a></li>
-                                <li><a href="contact.html">اتصل بنا</a></li>
+                                <li><a href="{{ route('contact-us') }}">اتصل بنا</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -80,7 +93,7 @@
 
                                 <ul>
                                     <li><a href="{{ route('home') }}">الرئيسية</a></li>
-                                    <li><a href="gallery.html">معرض الصور</a></li>
+                                    <li><a href="{{ route('gallery') }}">معرض الصور</a></li>
                                     <li><a href="reservation.html">متابعة الحجوزات</a></li>
                                     <li><a href="{{ route('contact-us') }}">اتصل بنا</a></li>
                                     <li>&nbsp;</li>
@@ -127,7 +140,7 @@
                             <li><a href="{{ \HackerESQ\Settings\Facades\Settings::get('snapchat') }}"><i class="fa fa-snapchat"></i></a></li>
                         @endif
                         @if(\HackerESQ\Settings\Facades\Settings::get('whatsapp'))
-                            <li><a href="{{ \HackerESQ\Settings\Facades\Settings::get('whatsapp') }}"><i class="fa fa-whatsapp"></i></a></li>
+                            <li><a href="https://wa.me/{{ str_replace([' ' , '-' , '_'] ,'' , \HackerESQ\Settings\Facades\Settings::get('whatsapp')) }}"><i class="fa fa-whatsapp"></i></a></li>
                         @endif
                         @if(\HackerESQ\Settings\Facades\Settings::get('instagram'))
                             <li><a href="{{ \HackerESQ\Settings\Facades\Settings::get('instagram') }}"><i class="fa fa-instagram"></i></a></li>
@@ -165,5 +178,7 @@
 ================================================== -->
 <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+
+@livewireScripts
 </body>
 </html>

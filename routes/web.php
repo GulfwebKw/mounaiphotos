@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\Controller::class, 'index'])->name('home');
-Route::get('/contact-us', [\App\Http\Controllers\Controller::class, 'index'])->name('contact-us');
+Route::get('/gallery', [\App\Http\Controllers\Controller::class, 'gallery'])->name('gallery');
+Route::get('/contact-us', \App\Livewire\ContactUs::class)->name('contact-us');
 Route::get('/test', function () {
     //dispatch(new \App\Jobs\sendRegisterEmailJob(1));
 });
