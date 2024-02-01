@@ -33,10 +33,12 @@ class Settings extends Page implements HasForms
     public $email ;
     public $emailNotification ;
     public $telephone ;
-    public $work_time_fa ;
+    public $work_time ;
     public $work_time_en ;
     public $address_en ;
-    public $address_fa ;
+    public $terms_and_condition_en ;
+    public $terms_and_condition ;
+    public $address ;
     public $logo ;
     public $twitter ;
     public $tiktok ;
@@ -45,9 +47,9 @@ class Settings extends Page implements HasForms
     public $snapchat ;
     public $instagram ;
     public $sub_title_en ;
-    public $sub_title_fa ;
+    public $sub_title ;
     public $about_us_en ;
-    public $about_us_fa ;
+    public $about_us ;
     public $first_status ;
     public $MYFATOORAH_IS_LIVE ;
     public $MYFATOORAH_API_KEY ;
@@ -85,19 +87,24 @@ class Settings extends Page implements HasForms
                     TextInput::make('work_time_en')
                         ->hidden()
                         ->nullable(),
-                    TextInput::make('work_time_fa')
+                    TextInput::make('work_time')
                         ->hidden()
                         ->nullable(),
                     TextInput::make('address_en')
                         ->hidden()
                         ->nullable(),
-                    TextInput::make('address_fa')
+                    TextInput::make('address')
+                        ->hidden()
+                        ->nullable(),
+                    RichEditor::make('terms_and_condition_en')
                         ->hidden()
                         ->nullable(),
                     TextInput::make('logo')
                         ->label('Logo')
                         ->type('file')
                         ->rule(['nullable' , 'image']),
+                    RichEditor::make('terms_and_condition')
+                        ->nullable(),
                 ])
                 ->columns(2),
             Section::make()
@@ -106,11 +113,11 @@ class Settings extends Page implements HasForms
                 ->schema([
                     RichEditor::make('about_us_en')
                         ->nullable(),
-                    RichEditor::make('about_us_fa')
+                    RichEditor::make('about_us')
                         ->nullable(),
                     TextInput::make('sub_title_en')
                         ->nullable(),
-                    TextInput::make('sub_title_fa')
+                    TextInput::make('sub_title')
                         ->nullable(),
                 ])
                 ->columns(2),
