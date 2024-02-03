@@ -28,8 +28,4 @@ class Controller extends BaseController
         return view('gallery' , compact('galleries'));
     }
 
-    public function details(Package $package){
-        $galleries = Gallery::query()->where('is_active' , '1')->orderBy('ordering')->get();
-        return view('details' , compact('package','galleries'));
-    }
 }

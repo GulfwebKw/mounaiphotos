@@ -47,6 +47,10 @@
     @hasSection('style')
         @yield('style')
     @endif
+
+    @isset($style)
+        {!! $style !!}
+    @endisset
     @livewireStyles
 </head>
 <body>
@@ -181,6 +185,10 @@
 @hasSection('script')
     @yield('script')
 @endif
+
+@isset($script)
+    {!! $script !!}
+@endisset
 @livewireScripts
 </body>
 </html>

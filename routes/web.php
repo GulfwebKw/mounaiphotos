@@ -17,7 +17,7 @@ Route::get('/', [\App\Http\Controllers\Controller::class, 'index'])->name('home'
 Route::get('/gallery', [\App\Http\Controllers\Controller::class, 'gallery'])->name('gallery');
 Route::get('/contact-us', \App\Livewire\ContactUs::class)->name('contact-us');
 Route::view('/terms', 'terms')->name('terms');
-Route::get('/package/{package}/details', [\App\Http\Controllers\Controller::class, 'details'])->name('package.details');
+Route::get('/package/{package}/details', \App\Livewire\Detail::class)->name('package.details');
 Route::get('/test', function () {
     //dispatch(new \App\Jobs\sendRegisterEmailJob(1));
 });
