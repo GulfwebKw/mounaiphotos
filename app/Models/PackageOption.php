@@ -4,32 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
+ * @property int $package_id
+ * @property Package $package
  * @property string $title
- * @property string $description
- * @property string $included
- * @property float $price
  * @property string $picture
- * @property int $ordering
  * @property bool $is_active
- * @property Collection<int, PackageOption> $options
+ * @property int $ordering
  * @property Carbon $created_at
- * @property Carbon $deleted_at
  * @property Carbon $updated_at
  */
-class Package extends Model
+class PackageOption extends Model
 {
-    use SoftDeletes;
     protected $fillable = [
         'title',
-        'description',
-        'included',
-        'price',
+        'package_id',
         'picture',
         'ordering',
         'is_active',
@@ -38,10 +30,10 @@ class Package extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'ordering' => 'int',
-        'price' => 'float',
+        'package_id' => 'int',
     ];
 
-    public function options(){
-        return $this->hasMany(PackageOption::class);
+    public function package(){
+        return $this->belongsTo(Package::class);
     }
 }

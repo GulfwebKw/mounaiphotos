@@ -7,7 +7,9 @@ use App\Filament\Resources\Setting\PackageResource\RelationManagers;
 use App\Filament\Resources\Setting;
 use App\Models\Package;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,24 +38,52 @@ class PackageResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->maxLength(255)
-                    ->required(),
-                Forms\Components\TextInput::make('price')
-                    ->step(0.01)
-                    ->minValue(0)
-                    ->type('number')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->rows(8)
-                    ->required(),
-                Forms\Components\Textarea::make('included')
-                    ->rows(8)
-                    ->label('Included in this package')
-                    ->required(),
-                Forms\Components\Toggle::make('is_active'),
-                Forms\Components\FileUpload::make('picture')
-                    ->image(),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Forms\Components\TextInput::make('price')
+                                    ->step(0.01)
+                                    ->minValue(0)
+                                    ->type('number')
+                                    ->required(),
+                                Forms\Components\Textarea::make('description')
+                                    ->rows(8)
+                                    ->required(),
+                                Forms\Components\Textarea::make('included')
+                                    ->rows(8)
+                                    ->label('Included in this package')
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_active'),
+                                Forms\Components\FileUpload::make('picture')
+                                    ->image(),
+                            ])->columns(2),
+                        Forms\Components\Section::make('Package Options')
+                            ->headerActions([
+                                Action::make('reset')
+                                    ->modalHeading('Are you sure?')
+                                    ->modalDescription('All existing items will be removed from the Package.')
+                                    ->requiresConfirmation()
+                                    ->color('danger')
+                                    ->action(fn (Forms\Set $set) => $set('items', [])),
+                            ])
+                            ->schema([
+                                Repeater::make('options')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title')
+                                            ->required(),
+                                        Forms\Components\Toggle::make('is_active'),
+                                        Forms\Components\FileUpload::make('picture')
+                                            ->image(),
+                                    ])
+                                    ->orderColumn('ordering')
+                                    ->defaultItems(1)
+                                    ->hiddenLabel()
+                                    ->columns(3)
+                                    ->required()
+                            ]),
             ]);
     }
 
