@@ -19,6 +19,7 @@ Route::get('/contact-us', \App\Livewire\ContactUs::class)->name('contact-us');
 Route::view('/terms', 'terms')->name('terms');
 Route::get('/package/{package}/details', \App\Livewire\Detail::class)->name('package.details');
 Route::get('/package/{package}/reserve', [\App\Http\Controllers\Controller::class, 'reserve'])->name('package.reserve');
+Route::get('/package/{package}/pay', [\App\Http\Controllers\Controller::class, 'pay'])->name('package.pay');
 Route::get('/test', function () {
     //dispatch(new \App\Jobs\sendRegisterEmailJob(1));
 });

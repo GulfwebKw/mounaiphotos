@@ -36,23 +36,9 @@ class Controller extends BaseController
         $request->validate([
             'date' => 'required|date',
         ]);
-        $selectedDate = Carbon::createFromFormat('Y-m-d' , $request->get('date') );
-        $listHolidayOnce = Holiday::query()
-            ->where('year' , $selectedDate->year )
-            ->where('month' , $selectedDate->month )
-            ->where('day' , $selectedDate->day )
-            ->where('type' , 'once' )
-            ->exists();
-        $listHolidayYearly = Holiday::query()
-            ->where('month' , $selectedDate->month )
-            ->where('day' , $selectedDate->day )
-            ->where('type' , 'yearly' )
-            ->exists();
-        $dayOfWork = Slot::query()
-            ->get()->pluck('day')->toArray();
-        if ( $listHolidayYearly or $listHolidayOnce or ! in_array($selectedDate->dayOfWeek , $dayOfWork ) )
+        $selectedDate = $this->checkDate($request->get('date'));
+        if ( $selectedDate === false )
             return redirect()->route('package.details' , $package);
-
 
         $slots = Slot::query()->where('day' , $selectedDate->dayOfWeek)
             ->get();
@@ -68,4 +54,50 @@ class Controller extends BaseController
         return view('reserve' , compact('package' , 'selectedDate' , 'times' ));
     }
 
+    public function pay(Request $request , Package $package){
+        $request->validate([
+            'date' => 'required|date',
+            'name' => 'required|string|max:256',
+            'phone' => 'required|string|max:15',
+            'time' => 'required',
+        ]);
+        try {
+            /** @var Carbon $selectedDate */
+            $selectedDate = $this->checkDate($request->get('date'));
+            if ($selectedDate === false)
+                return redirect()->route('package.details', $package);
+            $timeSlot = explode('-', $request->get('time'));
+            list($hour, $minute) = explode(':', $timeSlot[0]);
+            $selectedDate->setTime($hour,$minute);
+            $endDate = clone $selectedDate;
+            $endDate = $endDate->addMinutes($timeSlot[1]);
+        } catch (\Exception $exception){
+            return redirect()->route('package.details', $package);
+        }
+    }
+
+    /**
+     * @param $date
+     * @return bool|Carbon
+     */
+    private function checkDate($date)
+    {
+        $selectedDate = Carbon::createFromFormat('Y-m-d' , $date );
+        $listHolidayOnce = Holiday::query()
+            ->where('year' , $selectedDate->year )
+            ->where('month' , $selectedDate->month )
+            ->where('day' , $selectedDate->day )
+            ->where('type' , 'once' )
+            ->exists();
+        $listHolidayYearly = Holiday::query()
+            ->where('month' , $selectedDate->month )
+            ->where('day' , $selectedDate->day )
+            ->where('type' , 'yearly' )
+            ->exists();
+        $dayOfWork = Slot::query()
+            ->get()->pluck('day')->toArray();
+        if ( $listHolidayYearly or $listHolidayOnce or ! in_array($selectedDate->dayOfWeek , $dayOfWork ) )
+            return false;
+        return  $selectedDate;
+    }
 }
