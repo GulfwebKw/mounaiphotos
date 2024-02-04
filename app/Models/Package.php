@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
  * @property int $ordering
  * @property bool $is_active
  * @property Collection<int, PackageOption> $options
+ * @property Collection<int, PackageOption> $activeOptions
  * @property Carbon $created_at
  * @property Carbon $deleted_at
  * @property Carbon $updated_at
@@ -42,6 +43,10 @@ class Package extends Model
     ];
 
     public function options(){
-        return $this->hasMany(PackageOption::class);
+        return $this->hasMany(PackageOption::class)->orderBy('ordering');
+    }
+
+    public function activeOptions(){
+        return $this->hasMany(PackageOption::class)->orderBy('ordering')->where('is_active' , 1);
     }
 }

@@ -70,11 +70,10 @@
                     </ul>
                     <div class="clear20x"></div>
 
-                    <form action="{{ route('package.details' , $package) }}" method="POST">
-                        @csrf
+                    <form action="{{ route('package.reserve' , $package) }}" method="GET">
                         <input type="hidden" name="date" value="{{ $selectedYear.'-'.$selectedMonth.'-'.$selectedDay }}">
                         <div class="slot"><label for="checkbox" style="display: flex;width: 100%;column-gap: 10px;">
-                                <input type="checkbox" required name="approve_terms" value="1" id="checkbox" style="width: 30px;">
+                                <input type="checkbox" required id="checkbox" style="width: 30px;">
                                 <span>اوافق علي </span> <a href="{{ route('terms') }}" target="_blank">الشروط و الاحكام</a>  </label>
                         </div>
                         <p class="text-center">
