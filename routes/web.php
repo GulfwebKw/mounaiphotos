@@ -19,7 +19,9 @@ Route::get('/contact-us', \App\Livewire\ContactUs::class)->name('contact-us');
 Route::view('/terms', 'terms')->name('terms');
 Route::get('/package/{package}/details', \App\Livewire\Detail::class)->name('package.details');
 Route::get('/package/{package}/reserve', [\App\Http\Controllers\Controller::class, 'reserve'])->name('package.reserve');
-Route::get('/package/{package}/pay', [\App\Http\Controllers\Controller::class, 'pay'])->name('package.pay');
+Route::POST('/reservation/{package}/store', [\App\Http\Controllers\Controller::class, 'storeReserve'])->name('reserve.store');
+Route::get('/reservation/{reservation:uuid}/pay', [\App\Http\Controllers\PaymentController::class, 'pay'])->name('reservation.pay');
+Route::get('/reservation/{reservation:uuid}', [\App\Http\Controllers\Controller::class, 'reserveDetail'])->name('reservation.detail');
 Route::get('/test', function () {
     //dispatch(new \App\Jobs\sendRegisterEmailJob(1));
 });

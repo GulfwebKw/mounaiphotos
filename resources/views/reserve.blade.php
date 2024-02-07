@@ -30,7 +30,7 @@
     <section class="section-gap">
         <div class="container">
 
-            <form action="{{ route('package.pay' , $package) }}" method="POST">
+            <form action="{{ route('reserve.store' , $package) }}" method="POST">
                 @csrf
                 <input type="hidden" name="date" value="{{ $selectedDate->format('Y-m-d') }}">
                 <div class="row">
@@ -93,7 +93,7 @@
                             <select name="time" class="@error('time') is-invalid @enderror" dir="ltr">
                                 <option>حدد الوقت</option>
                                 @foreach($times as $time)
-                                    <option
+                                    <option @selected(old('time') == $time['start']->format('H:i') .'-'.$time['slot'] )
                                         value="{{ $time['start']->format('H:i') .'-'.$time['slot']  }}">{{ $time['start']->format('H:i') }}
                                         - {{ $time['start']->addMinute($time['slot'])->format('H:i') }}</option>
                                 @endforeach
@@ -107,20 +107,22 @@
                         <div class="clear30x"></div>
 
                         <label for="name">الإسم</label>
-                        <input type="text" id="name" class="@error('name') is-invalid @enderror" name="name">
+                        <input type="text" dir="auto" id="name" class="@error('name') is-invalid @enderror" name="name"
+                               value="{{ old('name') }}">
                         <div class="clear20x"></div>
 
                         <label for="name">رقم الهاتف</label>
-                        <input type="text" id="phone" class="@error('phone') is-invalid @enderror" name="phone"
+                        <input type="text" dir="auto" id="phone" class="@error('phone') is-invalid @enderror" name="phone"
                                placeholder="الرجاء ادخال رقم الهاتف باللغة الانجليزية"
+                               value="{{ old('phone') }}"
                                onblur="this.placeholder='الرجاء ادخال رقم الهاتف باللغة الانجليزية'"
                                onclick="this.placeholder=''">
                         <div class="clear20x"></div>
 
 
                         <label for="name">الملاحضات</label>
-                        <textarea type="text" id="message" class="@error('message') is-invalid @enderror" name="message"
-                                  rows="3"></textarea>
+                        <textarea type="text" dir="auto" id="message" class="@error('message') is-invalid @enderror" name="message"
+                                  rows="3">{{ old('message') }}</textarea>
                         <div class="clear20x"></div>
 
                         <div class="total_price">د.ك {{ number_format($package->perice) }}</div>

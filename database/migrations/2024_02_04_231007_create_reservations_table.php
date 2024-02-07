@@ -14,16 +14,18 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('package_id');
+            $table->string('uuid')->unique()->index();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->text('message')->nullable();
-            $table->dateTime('from');
-            $table->dateTime('to');
+            $table->dateTime('from')->index();
+            $table->dateTime('to')->index();
             $table->string('price');
-            $table->string('invoice_id');
-            $table->string('reference_number');
+            $table->string('invoice_id')->nullable();
+            $table->string('reference_number')->nullable();
             $table->boolean('is_paid')->default(false);
-            $table->dateTime('paid_at');
+            $table->dateTime('paid_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
