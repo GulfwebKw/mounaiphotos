@@ -75,7 +75,7 @@
                             <ul>
                                 <li><a href="{{ route('home') }}">الرئيسية</a></li>
                                 <li><a href="{{ route('gallery') }}">معرض الصور</a></li>
-                                <li><a href="reservation.html">متابعة الحجوزات</a></li>
+                                <li><a href="{{ route('reserve.search') }}">متابعة الحجوزات</a></li>
                                 <li><a href="{{ route('contact-us') }}">اتصل بنا</a></li>
                             </ul>
                         </nav>
@@ -98,7 +98,7 @@
                                 <ul>
                                     <li><a href="{{ route('home') }}">الرئيسية</a></li>
                                     <li><a href="{{ route('gallery') }}">معرض الصور</a></li>
-                                    <li><a href="reservation.html">متابعة الحجوزات</a></li>
+                                    <li><a href="{{ route('reserve.search') }}">متابعة الحجوزات</a></li>
                                     <li><a href="{{ route('contact-us') }}">اتصل بنا</a></li>
                                     <li>&nbsp;</li>
                                     <li>&nbsp;</li>

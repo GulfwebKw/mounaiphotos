@@ -134,6 +134,18 @@ class Controller extends BaseController
         return view('reserveDetail' , compact('reservation'));
     }
 
+    public function searchReserve(Request $request){
+        /** @var Reservation $reservation */
+        $reservation = Reservation::query()->where('uuid' , $request->get('track'))->first();
+        if (
+            $reservation == null or (
+            ! $reservation->is_paid and
+            $reservation->created_at->lt( now()->subMinutes(Controller::$reserveTime) ))
+        )
+            return redirect()->back()->withErrors('لا يمكن العثور على أي حجز!');
+        return redirect()->route('reservation.detail' , $reservation );
+    }
+
     /**
      * @param $date
      * @return bool|Carbon

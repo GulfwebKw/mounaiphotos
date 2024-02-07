@@ -19,6 +19,8 @@ Route::get('/contact-us', \App\Livewire\ContactUs::class)->name('contact-us');
 Route::view('/terms', 'terms')->name('terms');
 Route::get('/package/{package}/details', \App\Livewire\Detail::class)->name('package.details');
 Route::get('/package/{package}/reserve', [\App\Http\Controllers\Controller::class, 'reserve'])->name('package.reserve');
+Route::view('/reservation/search', 'search')->name('reserve.search');
+Route::POST('/reservation/search', [\App\Http\Controllers\Controller::class, 'searchReserve'])->name('reserve.searching');
 Route::POST('/reservation/{package}/store', [\App\Http\Controllers\Controller::class, 'storeReserve'])->name('reserve.store');
 Route::get('/reservation/{reservation:uuid}/pay', [\App\Http\Controllers\PaymentController::class, 'pay'])->name('reservation.pay');
 Route::get('/reservation/{reservation:uuid}', [\App\Http\Controllers\Controller::class, 'reserveDetail'])->name('reservation.detail');
