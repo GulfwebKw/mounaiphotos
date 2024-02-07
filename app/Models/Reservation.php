@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -20,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property float $price
  * @property string $invoice_id
  * @property string $reference_number
+ * @property Collection<int, ReserveOption> $options
  * @property bool $is_paid
  * @property Carbon $paid_at
  * @property Carbon $deleted_at
@@ -55,5 +57,9 @@ class Reservation extends Model
 
     public function package(){
         return $this->belongsTo(Package::class)->withTrashed();
+    }
+
+    public function options(){
+        return $this->hasMany(ReserveOption::class);
     }
 }

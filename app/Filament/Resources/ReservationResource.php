@@ -52,7 +52,7 @@ class ReservationResource extends Resource
 
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\Placeholder::make('uuid'),
+                        Forms\Components\TextInput::make('uuid'),
 
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
@@ -163,19 +163,18 @@ class ReservationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('id' , 'desc');
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\OptionsRelationManager::class
         ];
     }
 
@@ -185,6 +184,7 @@ class ReservationResource extends Resource
             'index' => Pages\ListReservations::route('/'),
             'create' => Pages\CreateReservation::route('/create'),
             'edit' => Pages\EditReservation::route('/{record}/edit'),
+            'view' => Pages\ViewReservation::route('/{record}'),
         ];
     }
     public static function getEloquentQuery(): Builder

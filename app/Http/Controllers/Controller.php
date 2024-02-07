@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Holiday;
 use App\Models\Package;
 use App\Models\Reservation;
+use App\Models\ReserveOption;
 use App\Models\Slider;
 use App\Models\Slot;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -122,6 +123,12 @@ class Controller extends BaseController
         $reserve->price = $package->price;
         cache()->forget('time_of_'.$selectedDate->format('Y_m_d'));
         $reserve->save();
+        foreach ($request->get('options' , []) as $option_id){
+            $reserveOption = new ReserveOption();
+            $reserveOption->reservation_id = $reserve->id;
+            $reserveOption->option_id = $option_id;
+            $reserveOption->save();
+        }
         return redirect()->route('reservation.pay' , $uuid);
     }
 
