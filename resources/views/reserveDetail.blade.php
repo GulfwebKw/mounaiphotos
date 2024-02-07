@@ -9,16 +9,21 @@
 
                 <div class="offset-lg-3 col-lg col-lg-6 text-center">
                     <h2>المدفوعات</h2>
-                    <p class="text-center"><img src="{{ asset('assets/images/check.png') }}" alt="" class="check"> </p>
-                    <p class="sucess">تم الدفع بنجاح</p>
+                    @if( $reservation->is_paid )
+                        <p class="text-center"><img src="{{ asset('assets/images/check.png') }}" alt="" class="check"> </p>
+                        <p class="sucess">تم الدفع بنجاح</p>
 
-                    <ul class="payment_details">
-                        <li>التاريخ و الوقت : <span class="ltr">27-01-2024 :15:17:12</span></li>
-                        <li>معرف الدفع : #1324577890</li>
-                        <li>السعر الكلي : 50 د.ك</li>
-                    </ul>
+                        <ul class="payment_details">
+                            <li>التاريخ و الوقت : <span class="ltr">{{ $reservation->from }}</span></li>
+                            <li>معرف الدفع : #{{ $reservation->invoice_id }}</li>
+                            <li>السعر الكلي : {{ number_format($reservation->price) }} د.ك</li>
+                        </ul>
+                        <button onclick="window.location.href='{{ route('home') }}'" class="btn-lg">العودة إلى الرئيسية</button>
+                    @else
+                        <p class="sucess" style="color: #d11c1c;">هناك مشكلة في الدفع</p>
+                        <button onclick="window.location.href='{{ route('reservation.pay' , $reservation) }}'" class="btn-lg">احجز الآن</button>
+                    @endif
 
-                    <button onclick="window.location.href='index.html'" class="btn-lg">العودة إلى الرئيسية</button>
                 </div>
 
             </div>

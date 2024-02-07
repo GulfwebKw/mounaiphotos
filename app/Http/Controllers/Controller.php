@@ -126,6 +126,11 @@ class Controller extends BaseController
     }
 
     public function reserveDetail(Reservation $reservation){
+        if (
+            ! $reservation->is_paid and
+            $reservation->created_at->lt( now()->subMinutes(Controller::$reserveTime) )
+        )
+            abort(404);
         return view('reserveDetail' , compact('reservation'));
     }
 
