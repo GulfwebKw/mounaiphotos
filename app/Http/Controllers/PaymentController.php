@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DezSMS;
 use App\Jobs\sendRegisterEmailJob;
 use App\Models\Application;
 use App\Models\Reservation;
@@ -53,6 +54,10 @@ class PaymentController
         $reservation->paid_at = now();
         $reservation->save();
 //        dispatch(new sendRegisterEmailJob($application->id));
+        if ( $reservation->phone )
+            DezSMS::send($reservation->phone  , 'لقد تم حجز طلبك لعام '.$reservation->from .'. رمز الحجز هو :'. $reservation->uuid);
+        if ( Settings::get('telephoneNotification' , false) )
+            DezSMS::send(Settings::get('telephoneNotification') , 'new request has been reserved for: '.$reservation->from);
         return redirect()->route('reservation.detail' , $reservation );
     }
 

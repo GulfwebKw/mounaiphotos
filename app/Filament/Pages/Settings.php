@@ -32,6 +32,7 @@ class Settings extends Page implements HasForms
     public $site_title ;
     public $email ;
     public $emailNotification ;
+    public $telephoneNotification ;
     public $telephone ;
     public $work_time ;
     public $work_time_en ;
@@ -56,6 +57,9 @@ class Settings extends Page implements HasForms
     public $KNET_IS_LIVE ;
     public $KNET_TRANSPORTAL_ID ;
     public $KNET_TRANSPORTAL_PASS ;
+    public $DezSMS_user_id ;
+    public $DezSMS_sender_name ;
+    public $DezSMS_api_key ;
 
 
 
@@ -83,6 +87,10 @@ class Settings extends Page implements HasForms
                     TextInput::make('emailNotification')
                         ->label('Admin email for notification')
                         ->type('email')
+                        ->nullable(),
+                    TextInput::make('telephoneNotification')
+                        ->label('Admin Phone for notification')
+                        ->type('number')
                         ->nullable(),
                     TextInput::make('work_time_en')
                         ->hidden()
@@ -156,6 +164,20 @@ class Settings extends Page implements HasForms
                         ->inline(false)
                         ->onColor('success')
                         ->offColor('danger'),
+                ])
+                ->columns(2),
+            Section::make()
+                ->label('Dez SMS')
+                ->schema([
+                    TextInput::make('DezSMS_user_id')
+                        ->label('Dez SMS User Id')
+                        ->nullable(),
+                    TextInput::make('DezSMS_sender_name')
+                        ->label('Dez SMS Sender name')
+                        ->nullable(),
+                    TextInput::make('DezSMS_api_key')
+                        ->label('Dez SMS API key')
+                        ->nullable(),
                 ])
                 ->columns(2),
         ];
