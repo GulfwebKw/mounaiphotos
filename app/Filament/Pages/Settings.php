@@ -28,6 +28,8 @@ class Settings extends Page implements HasForms
     protected static string $view = 'filament.pages.settings';
 
 
+    protected $gateways  = ['payle8']; // MYFATOORAH , payle8
+
     public $site_title_en ;
     public $site_title ;
     public $email ;
@@ -60,6 +62,11 @@ class Settings extends Page implements HasForms
     public $DezSMS_user_id ;
     public $DezSMS_sender_name ;
     public $DezSMS_api_key ;
+    public $PayLeMerchantAccountID ;
+    public $PayLe_IS_LIVE ;
+    public $PayLeAccountPassword ;
+    public $PayLeResourceKey ;
+    public $PayLeBusinessCode ;
 
 
 
@@ -131,58 +138,91 @@ class Settings extends Page implements HasForms
                 ->columns(2),
             Section::make()
                 ->label('Social')
-                ->schema([
-                    TextInput::make('twitter')
-                        ->type('url')
-                        ->nullable(),
-                    TextInput::make('snapchat')
-                        ->type('url')
-                        ->nullable(),
-                    TextInput::make('facebook')
-                        ->type('url')
-                        ->nullable(),
-                    TextInput::make('instagram')
-                        ->type('url')
-                        ->nullable(),
-                    TextInput::make('whatsapp')
-                        ->label('Whatsapp Number')
-                        ->type('url')
-                        ->nullable(),
-                    TextInput::make('tiktok')
-                        ->type('url')
-                        ->nullable(),
-                ])
+                ->schema( $this->Socials() )
                 ->columns(2),
             Section::make()
-                ->label('My Fatoorah Gateway')
-                ->schema([
-                    TextInput::make('MYFATOORAH_API_KEY')
-                        ->label('Myfatoorah API Key')
-                        ->nullable(),
-                    Toggle::make('MYFATOORAH_IS_LIVE')
-                        ->label('Gateway in live mode? (Danger! In Production do not stay in red position!)')
-                        ->inline(false)
-                        ->onColor('success')
-                        ->offColor('danger'),
-                ])
+                ->label('Payment Gateway')
+                ->schema( $this->PaymentGateway())
                 ->columns(2),
             Section::make()
                 ->label('Dez SMS')
-                ->schema([
-                    TextInput::make('DezSMS_user_id')
-                        ->label('Dez SMS User Id')
-                        ->nullable(),
-                    TextInput::make('DezSMS_sender_name')
-                        ->label('Dez SMS Sender name')
-                        ->nullable(),
-                    TextInput::make('DezSMS_api_key')
-                        ->label('Dez SMS API key')
-                        ->nullable(),
-                ])
+                ->schema($this->DezSMS())
                 ->columns(2),
         ];
     }
 
+    public function PaymentGateway() {
+        $fields = [] ;
+        if ( in_array( 'MYFATOORAH'  , $this->gateways )) {
+            $fields[]  = TextInput::make('MYFATOORAH_API_KEY')
+                ->label('Myfatoorah API Key')
+                ->nullable();
+            $fields[] = Toggle::make('MYFATOORAH_IS_LIVE')
+                        ->label('Gateway in live mode? (Danger! In Production do not stay in red position!)')
+                        ->inline(false)
+                        ->onColor('success')
+                        ->offColor('danger');
+        }
+        if ( in_array( 'payle8'  , $this->gateways )) {
+            $fields[]  =  TextInput::make('PayLeMerchantAccountID')
+                ->label('PayLe Merchant Account ID')
+                ->nullable();
+            $fields[]  =  TextInput::make('PayLeAccountPassword')
+                ->label('PayLe Account Password')
+                ->nullable();
+            $fields[]  =  TextInput::make('PayLeResourceKey')
+                ->label('PayLe Resource Key')
+                ->nullable();
+            $fields[]  =  TextInput::make('PayLeBusinessCode')
+                ->label('PayLe Business Code')
+                ->nullable();
+            $fields[] = Toggle::make('PayLe_IS_LIVE')
+                        ->label('Gateway in live mode? (Danger! In Production do not stay in red position!)')
+                        ->inline(false)
+                        ->onColor('success')
+                        ->offColor('danger');
+        }
+
+        return $fields;
+    }
+
+    public function DezSMS() {
+        return [
+            TextInput::make('DezSMS_user_id')
+                ->label('Dez SMS User Id')
+                ->nullable(),
+            TextInput::make('DezSMS_sender_name')
+                ->label('Dez SMS Sender name')
+                ->nullable(),
+            TextInput::make('DezSMS_api_key')
+                ->label('Dez SMS API key')
+                ->nullable(),
+        ];
+    }
+
+    public function Socials() {
+        return [
+            TextInput::make('twitter')
+                ->type('url')
+                ->nullable(),
+            TextInput::make('snapchat')
+                ->type('url')
+                ->nullable(),
+            TextInput::make('facebook')
+                ->type('url')
+                ->nullable(),
+            TextInput::make('instagram')
+                ->type('url')
+                ->nullable(),
+            TextInput::make('whatsapp')
+                ->label('Whatsapp Number')
+                ->type('url')
+                ->nullable(),
+            TextInput::make('tiktok')
+                ->type('url')
+                ->nullable(),
+        ];
+    }
 
     public function save()
     {

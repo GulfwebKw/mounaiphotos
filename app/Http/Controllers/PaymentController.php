@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DezSMS;
+use App\Helpers\payleq8_com\payment;
 use App\Jobs\sendRegisterEmailJob;
-use App\Models\Application;
 use App\Models\Reservation;
 use HackerESQ\Settings\Facades\Settings;
 use Illuminate\Http\Request;
@@ -25,21 +25,25 @@ class PaymentController
         if ( $reservation->package->price <= 0 )
             return $this->reservationPaid($reservation);
 
-//        $callback = route('callBack' , $reservation->uuid);
-
+        $callback = route('reservation.callBack' , $reservation);
+        $payment = new payment();
+        $result = $payment->process_payment($reservation->id ,$callback, $reservation->package->price , $reservation->phone , '' ,$reservation->name);
+        if ( $result['result'] )
+            return redirect()->to($result['redirect']);
         return ;
     }
-    public function callBack(Request $request, Application $application = null){
+    public function callBack(Reservation $reservation = null){
 
-        $method = self::findMethod($application->gateway) . 'Callback';
-        list($status , $msg ,$invoiceId , $invoiceReference , $application) =  self::{$method}($request , $application);
-        if ( $application == null)
+        if (
+            $reservation->is_paid
+        )
             abort(404);
-
+        $payment = new payment();
+        list($status , $invoiceId , $invoiceReference) = $payment->callback($reservation->id);
         if ( $status ){
-            return self::applicationPaid($application , $invoiceId , $invoiceReference );
+            return $this->reservationPaid($reservation , $invoiceId , $invoiceReference );
         }
-        return redirect()->route('reservation.detail' , ['uuid' => $application->uuid , 'msg' => $msg ]);
+        return redirect()->route('reservation.detail' , $reservation);
 
     }
 

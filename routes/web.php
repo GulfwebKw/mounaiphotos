@@ -24,6 +24,7 @@ Route::POST('/reservation/search', [\App\Http\Controllers\Controller::class, 'se
 Route::POST('/reservation/{package}/store', [\App\Http\Controllers\Controller::class, 'storeReserve'])->name('reserve.store');
 Route::get('/reservation/{reservation:uuid}/pay', [\App\Http\Controllers\PaymentController::class, 'pay'])->name('reservation.pay');
 Route::get('/reservation/{reservation:uuid}', [\App\Http\Controllers\Controller::class, 'reserveDetail'])->name('reservation.detail');
+Route::get('/reservation/{reservation:uuid}/pay/result', [\App\Http\Controllers\PaymentController::class, 'callBack'])->name('reservation.callBack');
 Route::get('/test', function () {
     //dispatch(new \App\Jobs\sendRegisterEmailJob(1));
 });
