@@ -10,15 +10,28 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\HtmlString;
 
 class ReservationResource extends Resource
 {
     protected static ?string $model = Reservation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'uuid' ,'phone'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        return new HtmlString($record->name . '<small> (#'.$record->uuid.'  '.$record->from.')</small>');
+    }
 
     public static function form(Form $form): Form
     {
@@ -194,5 +207,10 @@ class ReservationResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::whereDate('from' ,'>=' , now()->format('Y-m-d'))->count();
     }
 }
