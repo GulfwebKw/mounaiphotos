@@ -88,16 +88,17 @@ class Settings extends Page implements HasForms
                         ->required(),
                     TextInput::make('telephone')
                         ->required(),
+                    TextInput::make('telephoneNotification')
+                        ->label('Admin Phone for notification')
+                        ->type('number')
+                        ->nullable(),
                     TextInput::make('email')
                         ->type('email')
                         ->required(),
                     TextInput::make('emailNotification')
+                        ->hidden()
                         ->label('Admin email for notification')
                         ->type('email')
-                        ->nullable(),
-                    TextInput::make('telephoneNotification')
-                        ->label('Admin Phone for notification')
-                        ->type('number')
                         ->nullable(),
                     TextInput::make('work_time_en')
                         ->hidden()
