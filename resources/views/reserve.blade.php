@@ -125,7 +125,7 @@
                                   rows="3">{{ old('message') }}</textarea>
                         <div class="clear20x"></div>
 
-                        <div class="total_price">د.ك {{ number_format($package->perice) }}</div>
+                        <div class="total_price">د.ك {{ number_format($package->price) }}</div>
                         <div class="clear20x"></div>
 
                     </div>
