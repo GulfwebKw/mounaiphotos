@@ -94,16 +94,18 @@
                     </ul>
                     <div class="clear20x"></div>
 
-                    <form action="{{ route('package.reserve' , $package) }}" method="GET">
+                    <form action="{{ route('terms') }}" method="GET">
                         <input type="hidden" name="date"
                                value="{{ $selectedYear.'-'.$selectedMonth.'-'.$selectedDay }}">
+                        <input type="hidden" name="package_id"
+                               value="{{ $package->id }}">
                         <div class="slot"><label for="checkbox" style="display: flex;width: 100%;column-gap: 10px;">
                                 <input type="checkbox" required id="checkbox" style="width: 30px;">
                                 <span>اوافق علي </span> <a href="{{ route('terms') }}" target="_blank">الشروط و
                                     الاحكام</a> </label>
                         </div>
                         <p class="text-center">
-                            <button type="submit" class="btn-lg">احجز الآن</button>
+                            <button type="submit" @if( $selectedYear.'-'.$selectedMonth.'-'.$selectedDay == "--") disabled @endif class="btn-lg">احجز الآن</button>
                         </p>
                     </form>
                 </div>
