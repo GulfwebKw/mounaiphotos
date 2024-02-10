@@ -2,7 +2,7 @@
 @section('title' ,'معرض الصور')
 @section('style')
     <!--facnybox source start here -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery/1.4/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/fancy/jquery.easing-1.3.pack.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/fancy/jquery.fancybox-1.3.4.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fancy/jquery.fancybox-1.3.4.css') }}" media="screen" />
