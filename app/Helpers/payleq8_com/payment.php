@@ -3,6 +3,8 @@
 namespace App\Helpers\payleq8_com;
 
 use HackerESQ\Settings\Facades\Settings;
+use Illuminate\Support\Facades\Log;
+
 class payment
 {
     const APIURL	= 'https://trans.payleq8.com/gatewaypublicinit';
@@ -30,21 +32,26 @@ class payment
     /**
      * Main function which processes the payment
      */
-    function process_payment($order_id , $callback , $total , $phone , $email , $name )
+    function process_payment($order_id , $callback , $total , $phone , $email , $name , $uuid = null )
     {
 
-        $data		= compact('order_id', 'callback', 'total', 'phone', 'email', 'name');
+
+        $callback = route('callBack');
+
+        $data		= compact('order_id', 'callback', 'total', 'phone', 'email', 'name' , 'uuid');
 
         $apiurl		= self::APIURL;
-        if ($this->sandbox) {
+        if (! $this->sandbox) {
             $apiurl		= self::TESTURL;
         }
+
         $lang		= $this->language;
         $transdata	= $this->transaction_data($data);
         $mid		= $this->mid;
         $version	= '0';
         $redirect	= $apiurl . '/' . $lang . '/' . $transdata . '/' . $mid . '/' . $version;
 
+        Log::info('redirect to: ', [$redirect]);
         return array(
             'result'   => true,
             'redirect' => $redirect,
@@ -55,7 +62,7 @@ class payment
      * The callback function that PayLe
      * uses to send updates about the payment
      */
-    function callback($transId)
+    function callback()
     {
         if (request()->get('refnumber' , false)) {
             // Check if transaction attempt was successful
@@ -65,8 +72,8 @@ class payment
                 $transstr	= $phpclass->decrypt($transdata, $this->mkey);
                 parse_str($transstr, $trans);
                 // Check if transaction was successful
-                if (isset($trans['result']) && intval($trans['result']) == 1 and $trans['invoicekey'] == $transId) {
-                    return [true ,  request()->get('trackNumber') , $trans['paymentid']];
+                if (isset($trans['result']) && intval($trans['result']) == 1 ) {
+                    return [true ,  request()->get('trackNumber') , $trans['paymentid'] , $trans['invoicekey']];
                 }
             }
         }
@@ -76,7 +83,7 @@ class payment
     function get_fullAmount($amount)
     {
 
-        if ($this->sandbox) {
+        if (! $this->sandbox) {
             $feeurl		= self::FEETEST;
         } else {
             $feeurl		= self::FEEURL;
@@ -111,6 +118,7 @@ class payment
 
         // Parse the response to get fullAmount
         $result		= json_decode($response);
+        Log::info('get full amount: ', (array) $result);
         $records	= $result->records;
         foreach ($records as $i => $r) {
             if ($r->id == $paytype) {
@@ -171,6 +179,7 @@ class payment
         $phpclass = new PHP_AES_Cipher;
         $encriptData = $phpclass->encrypt($transactionRequestData, $this->mkey);
 
+        Log::info('new payment request: ', [$transactionRequestData , $this->mkey , $encriptData]);
         return $encriptData;
     }
 }

@@ -40,6 +40,7 @@ class DezSMS
                 $jsdecode = json_decode($response, true);
                 $status = $jsdecode[0]['status'];
                 $message = self::getErrorMsg($status);
+                Log::info('send Message to : '.$to.' Message : '.$sms_msg , [$jsdecode , $status , $message  ] );
                 $jsdecode = ['status' => $status, 'message' => $message];
             } else {
                 $jsdecode = ['status' => '404', 'message' => 'Credentials are missing'];
