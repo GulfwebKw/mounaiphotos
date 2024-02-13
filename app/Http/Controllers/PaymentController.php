@@ -69,7 +69,7 @@ class PaymentController
         $reservation->save();
 //        dispatch(new sendRegisterEmailJob($application->id));
         if ( $reservation->phone )
-            DezSMS::send($reservation->phone  , 'لقد تم حجز طلبك لعام '.$reservation->from .'. رمز الحجز هو :'. $reservation->uuid);
+            DezSMS::send($reservation->phone  , 'Your booking has been confirmed for mounai studio.' .chr(10). 'سوف يتم التواصل واتساب لإرسال العنوان واللوكيشن قبل الموعد بيوم.'.chr(10). 'الرجاء الاحتفاظ بـكابجر الدفع ورقم الحجز '.$reservation->uuid .chr(10).'التاريخ: '.$reservation->from );
         if ( Settings::get('telephoneNotification' , false) )
             DezSMS::send(Settings::get('telephoneNotification') , 'new request has been reserved for: '.$reservation->from);
         return redirect()->route('reservation.detail' , $reservation );
