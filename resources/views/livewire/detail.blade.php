@@ -99,11 +99,20 @@
                                value="{{ $selectedYear.'-'.$selectedMonth.'-'.$selectedDay }}">
                         <input type="hidden" name="package_id"
                                value="{{ $package->id }}">
+                        <div class="slot" style="padding-right: 40px;"><span>عدد الأشخاص: </span>
+                            <select name="number_of_persons">
+                                @for($i = 1 ; $i <= $package->number_of_persons ; $i++ )
+                                    <option value="{{ $i }}">{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="clear30x"></div>
                         <div class="slot"><label for="checkbox" style="display: flex;width: 100%;column-gap: 10px;">
                                 <input type="checkbox" required id="checkbox" style="width: 30px;">
                                 <span>اوافق علي </span> <a href="{{ route('terms') }}" target="_blank">الشروط و
                                     الاحكام</a> </label>
                         </div>
+
                         <p class="text-center">
                             <button type="submit" @if( $selectedYear.'-'.$selectedMonth.'-'.$selectedDay == "--") disabled @endif class="btn-lg">احجز الآن</button>
                         </p>

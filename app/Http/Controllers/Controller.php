@@ -41,6 +41,13 @@ class Controller extends BaseController
         $request->validate([
             'date' => 'required|date',
         ]);
+        try{
+        $request->validate([
+            'number_of_persons' => 'required|numeric|min:1|max:'.$package->number_of_persons,
+        ]);
+        } catch (\Exception $exception) {
+            return redirect()->route('package.details' , $package)->withErrors($exception->getMessage());
+        }
         $selectedDate = $this->checkDate($request->get('date'));
         if ( $selectedDate === false )
             return redirect()->route('package.details' , $package);
@@ -91,6 +98,7 @@ class Controller extends BaseController
     public function storeReserve(Request $request , Package $package){
         $request->validate([
             'date' => 'required|date',
+            'number_of_persons' => 'required|numeric|min:1|max:'.$package->number_of_persons,
             'name' => 'required|string|max:256',
             'phone' => 'required|string|max:15',
             'time' => 'required',
@@ -118,9 +126,10 @@ class Controller extends BaseController
         $reserve->uuid = $uuid;
         $reserve->phone = $request->get('phone');
         $reserve->message = $request->get('message');
+        $reserve->number_of_persons = $request->get('number_of_persons');
         $reserve->from = $selectedDate;
         $reserve->to = $endDate;
-        $reserve->price = $package->price;
+        $reserve->price = $package->price * $reserve->number_of_persons;
         cache()->forget('time_of_'.$selectedDate->format('Y_m_d'));
         $reserve->save();
         foreach ($request->get('options' , []) as $option_id){

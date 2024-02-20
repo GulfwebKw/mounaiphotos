@@ -19,6 +19,8 @@
                 <form action="{{ route('package.reserve' , request()->get('package_id')) }}" method="GET">
                     <input type="hidden" name="date"
                            value="{{ request()->get('date') }}">
+                    <input type="hidden" name="number_of_persons"
+                           value="{{ request()->get('number_of_persons') }}">
                     <p class="text-center">
                         <button type="submit" class="btn-lg">تابع الدفع</button>
                     </p>

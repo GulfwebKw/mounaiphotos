@@ -33,6 +33,7 @@
             <form action="{{ route('reserve.store' , $package) }}" method="POST">
                 @csrf
                 <input type="hidden" name="date" value="{{ $selectedDate->format('Y-m-d') }}">
+                <input type="hidden" name="number_of_persons" value="{{ request()->get('number_of_persons' , 0) }}">
                 <div class="row">
 
                     <div class="col-12 col-lg-12">

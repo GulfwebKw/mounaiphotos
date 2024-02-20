@@ -22,14 +22,18 @@ class PaymentController
         )
             abort(404);
 
-        if ( $reservation->package->price <= 0 )
+        $price = $reservation->number_of_persons * $reservation->package->price;
+        if ( $price <= 0 )
             return $this->reservationPaid($reservation);
 
         $callback = route('reservation.callBack' , $reservation);
         $payment = new payment();
-        $result = $payment->process_payment($reservation->id ,$callback, $reservation->package->price , $reservation->phone , '' ,$reservation->name , $reservation->uuid);
-        if ( $result['result'] )
+        $result = $payment->process_payment($reservation->id ,$callback, $price , $reservation->phone , '' ,$reservation->name , $reservation->uuid);
+        if ( $result['result'] ) {
+            $reservation->price = $price;
+            $reservation->save();
             return redirect()->to($result['redirect']);
+        }
         return ;
     }
     public function callBack(Reservation $reservation = null){
