@@ -55,6 +55,11 @@ class PackageResource extends Resource
                                     ->rows(8)
                                     ->label('Included in this package')
                                     ->required(),
+                                Forms\Components\TextInput::make('number_of_persons')
+                                    ->type('number')
+                                    ->minValue(0)
+                                    ->label('Max number of persons per session')
+                                    ->required(),
                                 Forms\Components\Toggle::make('is_active'),
                                 Forms\Components\FileUpload::make('picture')
                                     ->image(),

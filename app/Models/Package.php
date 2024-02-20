@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
  * @property string $included
  * @property float $price
  * @property string $picture
+ * @property int $number_of_persons
  * @property int $ordering
  * @property bool $is_active
  * @property Collection<int, PackageOption> $options
@@ -33,12 +34,14 @@ class Package extends Model
         'included',
         'price',
         'picture',
+        'number_of_persons',
         'ordering',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'number_of_persons' => 'int',
         'ordering' => 'int',
         'price' => 'float',
     ];

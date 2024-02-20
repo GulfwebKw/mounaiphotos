@@ -45,11 +45,13 @@ class ReservationResource extends Resource
                                 Forms\Components\TextInput::make('phone'),
                                 Forms\Components\DateTimePicker::make('from'),
                                 Forms\Components\DateTimePicker::make('to'),
-                                Forms\Components\Textarea::make('message'),
+                                Forms\Components\TextInput::make('number_of_persons')
+                                    ->label('number of persons in this session'),
                                 Forms\Components\Select::make('package_id')
                                     ->relationship('package', 'title')
                                     ->searchable()
                                     ->required(),
+                                Forms\Components\Textarea::make('message'),
                             ])
                             ->columns(2),
 

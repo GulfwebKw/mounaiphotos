@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
  * @property string $message
  * @property Carbon $to
  * @property float $price
+ * @property int $number_of_persons
  * @property string $invoice_id
  * @property string $reference_number
  * @property Collection<int, ReserveOption> $options
@@ -40,6 +41,7 @@ class Reservation extends Model
         'from',
         'to',
         'price',
+        'number_of_persons',
         'invoice_id',
         'reference_number',
         'is_paid',
@@ -48,6 +50,7 @@ class Reservation extends Model
 
     protected $casts = [
         'package_id' => 'int',
+        'number_of_persons' => 'int',
         'from' => 'datetime',
         'to' => 'datetime',
         'price' => 'float',
