@@ -77,7 +77,7 @@ class payment
                 }
             }
         }
-        return [false , request()->get('trackNumber' , null) , null];
+        return [false , request()->get('trackNumber' , null) , null , request()->get('refnumber' , null) ];
     }
 
     function get_fullAmount($amount)

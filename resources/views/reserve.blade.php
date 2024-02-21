@@ -33,7 +33,7 @@
             <form action="{{ route('reserve.store' , $package) }}" method="POST">
                 @csrf
                 <input type="hidden" name="date" value="{{ $selectedDate->format('Y-m-d') }}">
-                <input type="hidden" name="number_of_persons" value="{{ request()->get('number_of_persons' , 0) }}">
+
                 <div class="row">
 
                     <div class="col-12 col-lg-12">
@@ -95,7 +95,7 @@
                                 <option>حدد الوقت</option>
                                 @foreach($times as $time)
                                     <option @selected(old('time') == $time['start']->format('H:i') .'-'.$time['slot'] )
-                                        value="{{ $time['start']->format('H:i') .'-'.$time['slot']  }}">{{ $time['start']->format('H:i') }}
+                                            value="{{ $time['start']->format('H:i') .'-'.$time['slot']  }}">{{ $time['start']->format('H:i') }}
                                         - {{ $time['start']->addMinute($time['slot'])->format('H:i') }}</option>
                                 @endforeach
                             </select>
@@ -126,7 +126,18 @@
                                   rows="3">{{ old('message') }}</textarea>
                         <div class="clear20x"></div>
 
-                        <div class="total_price">د.ك {{ number_format($package->price * request()->get('number_of_persons' , 0)) }}</div>
+                        <div class="slot"><span>عدد الأشخاص: </span>
+
+                            <select name="number_of_persons" onchange="document.getElementById('price').textContent = ( parseInt(this.value) * {{ $package->price }});" class="@error('time') is-invalid @enderror" dir="ltr">
+                                @for($i = 1 ; $i <= $package->number_of_persons ; $i++ )
+                                    <option @selected(old('number_of_persons' , request()->get('number_of_persons' , 0)) == $i ) value="{{ $i }}">{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="clear20x"></div>
+
+                        <div class="total_price">د.ك <span id="price">{{ number_format($package->price * intval(old('number_of_persons' , request()->get('number_of_persons' , 0))) ) }}</span></div>
                         <div class="clear20x"></div>
 
                     </div>

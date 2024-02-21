@@ -51,14 +51,15 @@ class PaymentController
 
     }
     public function callBackTransaction(){
-        $payment = new payment();
-        list($status , $invoiceId , $invoiceReference , $objectId) = $payment->callback();
-        $reservation = Reservation::query()->find($objectId);
-        if ( $status and $reservation->id == $objectId and ! $reservation->is_paid){
-            return $this->reservationPaid($reservation , $invoiceId , $invoiceReference );
-        }
-        return redirect()->route('reservation.detail' , $reservation);
-
+        try {
+            $payment = new payment();
+            list($status, $invoiceId, $invoiceReference, $objectId) = $payment->callback();
+            $reservation = Reservation::query()->find($objectId);
+            if ($status and $reservation->id == $objectId and !$reservation->is_paid) {
+                return $this->reservationPaid($reservation, $invoiceId, $invoiceReference);
+            }
+            return redirect()->route('reservation.detail' , $reservation);
+        }catch (\Exception $exception){ abort(404) ; }
     }
 
     public function reservationPaid($reservation , $invoiceId = null , $invoiceReference = null){
