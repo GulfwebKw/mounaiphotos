@@ -169,6 +169,9 @@ class Controller extends BaseController
     private function checkDate($date)
     {
         $selectedDate = Carbon::createFromFormat('Y-m-d' , $date );
+        if ( $selectedDate->gte( now()->addDays(\HackerESQ\Settings\Facades\Settings::get('calender_show_for', 30))->startOfDay() ) )
+            return false;
+
         $listHolidayOnce = Holiday::query()
             ->where('year' , $selectedDate->year )
             ->where('month' , $selectedDate->month )

@@ -43,6 +43,7 @@ class Settings extends Page implements HasForms
     public $terms_and_condition ;
     public $address ;
     public $logo ;
+    public $calender_show_for ;
     public $twitter ;
     public $tiktok ;
     public $whatsapp ;
@@ -94,6 +95,11 @@ class Settings extends Page implements HasForms
                         ->nullable(),
                     TextInput::make('email')
                         ->type('email')
+                        ->required(),
+                    TextInput::make('calender_show_for')
+                        ->label('how much calender should enable to reserve? (Day)')
+                        ->type('number')
+                        ->minValue(0)
                         ->required(),
                     TextInput::make('emailNotification')
                         ->hidden()

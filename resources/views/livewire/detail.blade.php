@@ -48,7 +48,9 @@
                                 <div class="blank"></div>
                             @endfor
                             @for($i = 1 ; $i <= $mounthDays ; $i++)
-                                @if ( $today == $i )
+                                @if ( \Illuminate\Support\Carbon::create($year, $month, $i )->gte( now()->addDays(\HackerESQ\Settings\Facades\Settings::get('calender_show_for', 30))->startOfDay() ) )
+                                        <div class="past-date">{{ $i }}</div>
+                                @elseif ( $today == $i )
                                     <div
                                         class="selected @if($month == $selectedMonth and $year == $selectedYear and $i == $selectedDay ) today @endif  @if(in_array($i , $listHoliday) or ! in_array( ( ($i + $startWeekDay) % 7) + 1  , $dayOfWork)) past-date @endif "
                                         @if(in_array($i , $listHoliday) or ! in_array( ( ($i + $startWeekDay) % 7) + 1  , $dayOfWork))  @else wire:loading.attr="disabled"
